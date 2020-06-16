@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+
+<head>
+
+    <title>Australian Prisoners of War | Explore their journey</title>
+    <link rel="stylesheet" href="styles/stylesheet.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
+
+    <noscript>
+
+        <div class="noscript-msg">
+            <div class="text">
+                Sorry, you don't have Javascript enabled. We use JS for dynamic animation and analytics. Please enable to continue.
+            </div>
+        </div>
+
+    </noscript>
+
+</head>
+
+<body>
+
+<div class="abs-bg" id="background-names"></div>
+
+<div class="page pg1">
+
+    <img class="bg" src="Darwin_42.jpg">
+
+    <div class="person-card">
+        <span class="name" id="name">They were Australians.</span><br>
+        <span id="dob">From 1940 to 1945, over thirty thousand Australians were prisoners of war.</span><br>
+        <span id="service">These are their names.</span><br>
+        <span id="home">These are their stories.</span><br>
+    </div>
+
+</div>
+
+<script>
+
+let __JSON_URL__ = "https://nominal-rolls.dva.gov.au/searchAdvancedJSON.json?serviceName=ALL&specialityId=0&branchId=0&categoryId=0&pow=Y&searchType=ADVANCED&conflict=WW2";
+
+let inty;
+let people;
+let iterator = 0;
+
+function toTitleCase(str) {
+    return str.replace(
+        /\w\S*/g,
+        function(txt) {
+            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+        }
+    );
+}
+
+function shuffle(array) {
+    var currentIndex = array.length, temporaryValue, randomIndex;
+
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+        // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+
+        // And swap it with the current element.
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+    }
+
+    return array;
+}
+
+fetch('pows.json').then(response => response.json()).then(data => {
+    people = data
+    shuffle(people)
+    setTimeout(() => {
+        inty = setInterval(() => {
+
+            let person = people[inty % people.length];
+            let name = toTitleCase(person.attributes.Name.split(", ").reverse().join(" "));
+            let placeofbirth = person.attributes.PlaceOfBirth;
+
+            if (!placeofbirth) {
+                document.getElementById("home").style.visibility = "hidden";
+            } else {
+
+                if (placeofbirth.includes(",")) {
+                    placeofbirth = toTitleCase(placeofbirth).split(", ");
+                    document.getElementById("home").style.visibility = "unset";
+                    placeofbirth[1] = placeofbirth[1].toUpperCase();
+                    placeofbirth = placeofbirth.join(", ");
+                } else {
+                    placeofbirth = toTitleCase(placeofbirth);
+                }
+
+                document.getElementById('home').innerText = placeofbirth;
+            }
+
+            let serviceName = person.attributes.ServiceName.toLowerCase();
+            if (serviceName == "army") {
+                serviceName = "Australian Army"
+            } else if (serviceName = "raaf") {
+                serviceName = "Royal Australian Air Force"
+            } else if (" " in serviceName) {
+                serviceName = toTitleCase(serviceName);
+            } else {
+                serviceName = serviceName.toUpperCase();
+            }
+
+            let dateOfBirth = toTitleCase(people[inty % people.length].attributes.DateOfBirth);
+            let namespan = document.createElement("span");
+            namespan.innerText = name;
+            document.getElementById('background-names').appendChild(namespan);
+        
+            document.getElementById('name').innerText = name;
+            document.getElementById('dob').innerText = dateOfBirth;
+            document.getElementById('service').innerText = serviceName;
+            inty++;
+            
+        }, 500);
+    }, 5000)
+})
+
+</script>
+
+
+</body>

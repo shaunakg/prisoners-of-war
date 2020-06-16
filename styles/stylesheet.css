@@ -1,0 +1,93 @@
+
+body {
+    margin: 0; padding: 0;
+    background-color: #EEE;
+    font-family:  'Inter', -apple-system, BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.noscript-msg {
+    position: absolute;
+    display: block;
+    z-index: 999999;
+    width: 100vw; height: 100vh;
+    background-color: #EEE;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.noscript-msg .text {
+    font-size: 3rem;
+    font-weight: 800;
+    font-family: 'Inter', sans-serif;
+    max-width: 80vw;
+}
+
+.page {
+
+    position: relative;
+    width: 100vw; height: 100vh;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
+
+    overflow: hidden;
+
+}
+
+.page .bg {
+    display: block;
+    position: absolute;
+    z-index: 3;
+    width: 102vw; height: 102vh;
+    top: 0; left: 0; right: 0; bottom: 0;
+
+    filter: blur(5px)
+}
+
+.page .person-card {
+    padding: 20px;
+    margin: 10px;
+    background-color: white;
+    border-radius: 3px;
+    line-height: 1.5;
+
+    display: block;
+    position: absolute;
+    z-index: 5;
+
+    width: 50vw;
+
+    border-left: 20px solid lightcoral;
+}
+
+.page .person-card .name {
+    font-size: 3em;
+    font-weight: 900;
+}
+
+.abs-bg {
+    position: absolute;
+    width: 100vw; height: 100vh;
+    display: block;
+    z-index: 4;
+    margin: 0; padding: 0;
+    cursor: default;
+
+    overflow: hidden;
+}
+
+.abs-bg span {
+    opacity: 0.5;
+}
+
+.abs-bg span:nth-child(even) {
+    opacity: 0.9;
+}
+
+@media (max-width: 800px) {
+    .page .person-card {
+        width: 75vw;
+    }
+}
