@@ -33,6 +33,7 @@
 
     <div id="person_card" onclick="openModal(this)" class="person-card">
         <span class="name" id="name">They were Australians.</span><br>
+        <span id="learnmore">Click to learn more.</span>
     </div>
 
 </div>
@@ -41,11 +42,21 @@
 
     <header id="name"></header>
     <p>
-        <span class="name" id="name">They were Australians.</span><br>
-        <span id="dob">From 1940 to 1945, over thirty thousand Australians were prisoners of war.</span><br>
-        <span id="service">These are their names.</span><br>
-        <span id="home">These are their stories.</span><br>
+        
+        <b id="mTitle">Prisoner informaton (from DVA nominal rolls)</b>
+
+        <span id="basic-info">
+            <span class="name" id="name">They were Australians.</span><br>
+            <span id="dob">During the Great War, over 10,000 Australian were prisoners of war.</span><br>
+            <span id="service">These are their names.</span><br>
+            <span id="home">These are their stories.</span><br>
+            <span id="dbi"></span><br>
+        </span>
+
+        <span id="advi"></span><br>
+        <a id="info" class="info btn" href="https://shaunakg.github.io/prisoners-of-war">This website is a submission for the ANZAC 2020 competition.</a> <a id="cert" class="cert btn" href="https://jmss.vic.edu.au">JMSS 2020</a>
     </p>
+
     <span onclick="closeModal()" class="x">&#10060;</span>
 
 </div>
@@ -96,6 +107,11 @@ fetch('pows.json').then(response => response.json()).then(data => {
                 let person = people[inty % people.length];
                 let name = toTitleCase(person.attributes.Name.split(", ").reverse().join(" "));
                 let placeofbirth = person.attributes.PlaceOfBirth;
+                let infourl = `https://nominal-rolls.dva.gov.au/veteran?id=${person.attributes.id}&c=WW2`;
+                let certurl = `https://nominal-rolls.dva.gov.au/certificate/${person.attributes.id}/WW2`;
+
+                document.getElementById('advi').innerText = "";
+                document.getElementById("basic-info").style.display = "block";
 
                 if (!placeofbirth) {
                     document.getElementById("home").style.visibility = "hidden";
@@ -133,6 +149,14 @@ fetch('pows.json').then(response => response.json()).then(data => {
                 document.getElementById('dob').innerText = dateOfBirth;
                 document.getElementById('service').innerText = serviceName;
 
+                document.getElementById('dbi').innerText = person.attributes.id;
+
+                document.getElementById('info').innerText = `View ${name}'s service record`;
+                document.getElementById('info').href = infourl;
+
+                document.getElementById('cert').innerText = "Generate certificate";
+                document.getElementById('cert').href = certurl;
+
             }
 
             inty++;
@@ -142,15 +166,62 @@ fetch('pows.json').then(response => response.json()).then(data => {
 })
 
 let modal = false;
-let itb;
-let interval;
+let itb, interval, ftext, jparse;
 
 function openModal(e) {
 
     doDetailWrite = false;
+    let advDeetsWritten = false;
+    
     itb = document.getElementById('modal').innerHTML;
     e.style.filter = "blur(5px)";
     document.getElementById('modal').style.top = 0;
+
+    document.getElementById('mTitle').innerText = "We're attemping to load advanced information from the DVA nominal rolls. This uses insecure cross origin and may not work.";
+
+    fetch(`http://cross-origin.shaunak.io/https://nominal-rolls.dva.gov.au/veteran?id=${document.getElementById('dbi').innerText}&c=WW2`).then((r) => {
+        r.text().then((t) => {
+
+            ftext = t;
+            jparse = JSON.parse(t.split("var vetJSON = JSON.parse('").pop().split("');")[0]);
+
+            document.getElementById("basic-info").style.display = "none";
+            let advancedInformationTable = document.createElement("table");
+
+            delete jparse.service;
+            delete jparse.serviceNumber;
+            jparse.units = jparse.units.map((i) => {return i.unitName}).join(", ");
+            jparse = Object.assign(jparse, jparse.attributes);
+            delete jparse['attributes'];
+
+            Array.from(Object.keys(jparse)).forEach((key) => {
+
+                if (jparse[key] != "") {
+                    let newRow = document.createElement('tr');
+
+                    let tEntryA = document.createElement('td');
+                    tEntryA.classList.add("t-key");
+                    tEntryA.innerText = key;
+
+                    let tEntryB = document.createElement('td');
+                    tEntryB.classList.add("t-value");
+                    tEntryB.innerText = jparse[key];
+
+                    newRow.appendChild(tEntryA);
+                    newRow.appendChild(tEntryB);
+                    advancedInformationTable.appendChild(newRow);
+                }
+
+            });
+
+            document.getElementById('advi').appendChild(advancedInformationTable);
+            document.getElementById('mTitle').innerText = "Advanced information for prisoner";
+
+        })
+    }).catch((err) => {
+        document.getElementById("basic-info").style.display = "block";
+        document.getElementById('mTitle').innerText = "Prisoner informaton (from DVA nominal rolls, click red button for advanced)";
+    })
 
     setTimeout(() => {document.getElementById('pg1').onclick = closeModal;}, 1000)
 

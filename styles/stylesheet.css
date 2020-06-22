@@ -5,6 +5,23 @@ body {
     font-family:  'Inter', -apple-system, BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
+table {
+    width: 100%;
+    border: 1px solid lightgray;
+    border-collapse: collapse;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.t-key {
+    text-transform: uppercase;
+    text-align: left;
+}
+
+.t-value {
+    text-align: right;
+}
+
 .noscript-msg {
     position: absolute;
     display: block;
@@ -21,6 +38,23 @@ body {
     font-weight: 800;
     font-family: 'Inter', sans-serif;
     max-width: 80vw;
+}
+
+.btn {
+    padding: 10px;
+    border-radius: 5px;
+    color: white;
+    text-decoration: none;
+    /* margin: 2px; */
+    transition: 0.25s;
+}
+
+.info.btn {
+    background-color: lightcoral;
+}
+
+.cert.btn {
+    background-color: rgb(0, 0, 105);
 }
 
 .page {
@@ -90,14 +124,17 @@ body {
 }
 
 .abs-bg span:nth-child(even) {
-    /* opacity: 0.9; */
-    color: white;
-    background-color: black;
+    opacity: 1;
+    color: black;
 }
 
 @media (max-width: 800px) {
     .page .person-card {
         width: 75vw;
+    }
+
+    .btn {
+        width: 100%;
     }
 }
 
@@ -110,7 +147,7 @@ body {
     top: 0;
     width: calc(100vw - 60px);
     margin: 10px;
-    max-height: 40vh;
+    max-height: 95vh;
     padding: 20px;
 
     border-radius: 5px;
