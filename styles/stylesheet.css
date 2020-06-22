@@ -60,6 +60,13 @@ body {
     width: 50vw;
 
     border-left: 20px solid lightcoral;
+
+    transition: filter 1s, transform 0.5s;
+    cursor: pointer;
+}
+
+.page .person-card:hover {
+    transform: scale(1.05);
 }
 
 .page .person-card .name {
@@ -83,11 +90,45 @@ body {
 }
 
 .abs-bg span:nth-child(even) {
-    opacity: 0.9;
+    /* opacity: 0.9; */
+    color: white;
+    background-color: black;
 }
 
 @media (max-width: 800px) {
     .page .person-card {
         width: 75vw;
     }
+}
+
+/* Modal */
+
+.modal {
+    position: absolute;
+    display: block;
+    z-index: 9999999;
+    top: 0;
+    width: calc(100vw - 60px);
+    margin: 10px;
+    max-height: 40vh;
+    padding: 20px;
+
+    border-radius: 5px;
+    border-top: 30px solid coral;
+
+    background-color: white;
+
+    transition: 1s, border-top 0.25s;
+    top: -40vh;
+}
+
+.modal:hover {border-top: 30px solid burlywood}
+
+.modal .x {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    margin: 10px;
+    user-select: none;
+    cursor: pointer;
 }
