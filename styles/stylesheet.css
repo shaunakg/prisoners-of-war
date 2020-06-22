@@ -6,11 +6,23 @@ body {
 }
 
 table {
-    width: 100%;
+    width: calc(100% - 30px);
     border: 1px solid lightgray;
     border-collapse: collapse;
-    border-radius: 10px;
+    font-size: 0.8em;
     padding: 10px;
+}
+
+table tr:nth-child(odd) {
+    background-color: #e8e8e8;
+}
+
+table tr.powrow {
+    background-color: lightcoral !important;
+    font-weight: bold !important;
+    color: white !important;
+    transform: scale(1.01);
+    box-shadow: 0px 0px 5px gray;
 }
 
 .t-key {
@@ -20,6 +32,10 @@ table {
 
 .t-value {
     text-align: right;
+}
+
+td {
+    padding: 5px;
 }
 
 .noscript-msg {
@@ -47,6 +63,8 @@ table {
     text-decoration: none;
     /* margin: 2px; */
     transition: 0.25s;
+    cursor: pointer;
+    user-select: none;
 }
 
 .info.btn {
@@ -55,6 +73,10 @@ table {
 
 .cert.btn {
     background-color: rgb(0, 0, 105);
+}
+
+.orange.btn {
+    background-color: orange;
 }
 
 .page {
@@ -144,7 +166,6 @@ table {
     position: absolute;
     display: block;
     z-index: 9999999;
-    top: 0;
     width: calc(100vw - 60px);
     margin: 10px;
     max-height: 95vh;
@@ -156,7 +177,7 @@ table {
     background-color: white;
 
     transition: 1s, border-top 0.25s;
-    top: -40vh;
+    top: -200vh;
 }
 
 .modal:hover {border-top: 30px solid burlywood}
@@ -168,4 +189,8 @@ table {
     margin: 10px;
     user-select: none;
     cursor: pointer;
+}
+
+#dbi {
+    display: none;
 }

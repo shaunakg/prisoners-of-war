@@ -45,16 +45,40 @@
         
         <b id="mTitle">Prisoner informaton (from DVA nominal rolls)</b>
 
-        <span id="basic-info">
-            <span class="name" id="name">They were Australians.</span><br>
-            <span id="dob">During the Great War, over 10,000 Australian were prisoners of war.</span><br>
-            <span id="service">These are their names.</span><br>
-            <span id="home">These are their stories.</span><br>
-            <span id="dbi"></span><br>
-        </span>
+        <table id="basic-info">
+            <tr>
+                <td class="t-key">Name of soldier</td>
+                <td class="t-value" id="name">They were Australians</td>
+            </tr>
+
+            <tr>
+                <td class="t-key">Date of birth</td>
+                <td class="t-value" id="dob">During WW1, over 10,000 Australian were prisoners of war.</td>
+            </tr>
+
+            <tr>
+                <td class="t-key">Service organisation</td>
+                <td class="t-value" id="service">These are their names.</td>
+            </tr>
+
+            <tr>
+                <td class="t-key">Home town</td>
+                <td class="t-value" id="home">These are their stories.</td>
+            </tr>
+
+            <tr class="powrow">
+                <td class="t-key">Prisoner of War</td>
+                <td class="t-value">YES</td>
+            </tr>
+
+        </table>
 
         <span id="advi"></span><br>
-        <a id="info" class="info btn" href="https://shaunakg.github.io/prisoners-of-war">This website is a submission for the ANZAC 2020 competition.</a> <a id="cert" class="cert btn" href="https://jmss.vic.edu.au">JMSS 2020</a>
+        <span id="dbi"></span><br>
+        <a id="info" class="info btn" href="https://shaunakg.github.io/prisoners-of-war">This website is a submission for the ANZAC 2020 competition.</a> 
+        <a id="cert" class="cert btn" href="https://jmss.vic.edu.au">JMSS 2020</a> 
+        <a class="orange btn" onclick="doDetailWrite = true">Continue with names</a>
+
     </p>
 
     <span onclick="closeModal()" class="x">&#10060;</span>
@@ -191,13 +215,17 @@ function openModal(e) {
             delete jparse.service;
             delete jparse.serviceNumber;
             jparse.units = jparse.units.map((i) => {return i.unitName}).join(", ");
+            jparse['additionalServiceNumbers'] = jparse['additionalServiceNumbers'].map((i) => {return i.value}).join(", ");
+
             jparse = Object.assign(jparse, jparse.attributes);
             delete jparse['attributes'];
 
             Array.from(Object.keys(jparse)).forEach((key) => {
 
                 if (jparse[key] != "") {
+
                     let newRow = document.createElement('tr');
+                    newRow.classList.add(key == "Prisoner of War" ? "powrow" : "trow");
 
                     let tEntryA = document.createElement('td');
                     tEntryA.classList.add("t-key");
@@ -215,7 +243,7 @@ function openModal(e) {
             });
 
             document.getElementById('advi').appendChild(advancedInformationTable);
-            document.getElementById('mTitle').innerText = "Advanced information for prisoner";
+            document.getElementById('mTitle').innerText = `Advanced information for ${jparse['Rank']} ${jparse.firstName} ${jparse.surname}`;
 
         })
     }).catch((err) => {
@@ -231,7 +259,7 @@ function closeModal() {
     doDetailWrite = true;
     console.log("closing modal");
     document.getElementById('person_card').style.filter = "none";
-    document.getElementById('modal').style.top = "-40vh";
+    document.getElementById('modal').style.top = "-200vh";
 
     setTimeout(() => {document.getElementById('pg1').onclick = null;}, 1000)
 
