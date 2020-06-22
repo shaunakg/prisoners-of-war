@@ -45,6 +45,25 @@ td {
     z-index: 999999;
 }
 
+.iter {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    color: red;
+    font-weight: bold;
+    opacity: 0.5;
+    user-select: none;
+}
+
+.modal-iter {
+    position: absolute;
+    user-select: none;
+    top: -1.5em;
+    left: 5px;
+    color: white;
+    font-weight: bold;
+}
+
 .noscript-msg {
     position: absolute;
     display: block;
