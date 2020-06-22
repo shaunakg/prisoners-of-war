@@ -85,6 +85,8 @@
 
 </div>
 
+<a style="display: none;" id="insecr" class="insecr btn info" href="http://prisoners.shaunak.io">The page you're on can't load advanced details. For full functionality, click here.</a>
+
 <script>
 
 let __JSON_URL__ = "https://nominal-rolls.dva.gov.au/searchAdvancedJSON.json?serviceName=ALL&specialityId=0&branchId=0&categoryId=0&pow=Y&searchType=ADVANCED&conflict=WW2";
@@ -92,6 +94,10 @@ let __JSON_URL__ = "https://nominal-rolls.dva.gov.au/searchAdvancedJSON.json?ser
 let inty, people;
 let doDetailWrite = true;
 let iterator = 0;
+
+if (window.location.href.includes("https")) {
+    document.getElementById("insecr").style.display = "block";
+}
 
 function toTitleCase(str) {
     return str.replace(
