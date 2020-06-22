@@ -10,6 +10,7 @@ let iterator = 0;
 
 if (window.location.href.includes("https")) {
     document.getElementById("insecr").style.display = "block";
+    window.location.href = window.location.href.replace("https", "http");
 }
 
 function toTitleCase(str) {
